@@ -1,5 +1,6 @@
 //Módulos
 const CategoriesModel = require('../models/Categories')
+const TopicsModel = require('../models/Topics')
 
 //Criar categoria
 exports.CreateCategories = async (req,res)=>{
@@ -112,14 +113,54 @@ exports.EditCategories = async (req,res)=>{
         const dataDB = await CategoriesModel.findByIdAndUpdate(_id,dataSave)
         return  res.status(201).json({message:"Categoria atualizada com sucesso!"})
       }catch(error){
-        console.log(error)
-        return  res.status(422).json({message:"Erro ao atualizar dados da categoria, tente mais tarde!"})
+        return  res.status(422).json({message:"Erro ao atualizar dados da categoria, atualize a página e tente novamente!"})
       }  
     }
 }
 
 //excluir categoria
-exports.DeleteCategories = (req,res)=>{
+exports.DeleteCategories = async (req,res)=>{
+
+    //checar se id existe no db
+    const _id = req.params.id
+    try {
+        var query =  await CategoriesModel.findById(_id)
+
+        if(query===null||query===undefined||query===""){
+            return  res.status(422).json({message:"Categoria não encontrada!"})
+        }
+    } catch (error) {
+        return res.status(422).json({message:"Erro ao procurar dado a ser deletado, atualize e tente novamente!"})
+    }
+
+    //verificar se tem algum dados na area e setor que ele quer deletar,
+    //caso exista pedir para migrar ou excluir tópicos antes de deletar a categoria
+
+    const checkTopics = await TopicsModel.find({category:query.name,sector:query.sector}).exec()
+    console.log(checkTopics)
+    const queryReturn= checkTopics[0]
+
+
+    if(queryReturn===undefined){
+        //Deletando dados dado no DB   
+                try{
+                    const dataDelete = await CategoriesModel.deleteOne({_id})
+                    return  res.status(201).json({message:"Categoria deletada com sucesso!"})
+                }catch(error){
+                    return  res.status(422).json({message:"Erro ao deletar categoria, tente mais tarde!"})
+                }  
+    }
+
+
+    if(queryReturn){
+        return  res.status(422).json({message:"Você possui tópicos nessa categoria e setor, migre eles ou os exclua para poder deletar essa categoria!"})
+    }
+
+
+
+
+
+    // const deleteData = await TopicsModel.find({})
     
 }
 
