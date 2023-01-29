@@ -5,16 +5,18 @@ const CategoriesModel = require('../models/Categories')
 exports.CreateCategories = async (req,res)=>{
 
     const {name} = req.body
-    const nameSave = await name.toUpperCase()
+
     //Retira espaços em branco, antes e depois da string
     const SpaceName = await name.trim()
+
+    //deixa dado maiusculo para ter consistencia no DB
+    const nameSave = await SpaceName.toUpperCase()
 
     //validações
     if(!name || name===undefined || SpaceName===""|| SpaceName.length <= 3){
      return res.status(422).json({message:"Preencha o nome corretamente!"})
     }
 
-    //buscar dado no db e ver se já foi salvo, converter e lowerCase
     const query =  await CategoriesModel.find({name:nameSave})
 
     if(query.length!==0){
