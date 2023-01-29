@@ -5,6 +5,10 @@ const CategoriesModel = mongoose.model('Categories', new Schema({
     name:{
         type:String,
         required:true,
+    },
+    sector:{
+        type:String,
+        required:true,
     }
 
 })) 
