@@ -8,9 +8,9 @@ exports.CreateTopics = (req,res)=>{
 
         try{
             const dataSave = TopicsModel.create({name:name})
-            res.status(200).json({message:"Sucesso"})
+          return  res.status(200).json({message:"Sucesso"})
         }catch(error){
-            res.status(200).json({message:"error"})
+            return  res.status(200).json({message:"error"})
         }
 }
 
