@@ -4,28 +4,27 @@ const { Schema } = require('mongoose')
 
 const AdminModel = mongoose.model('user', new Schema({
 
-    admin:{
-        cnpj:{
-                type:String,
-                required:true,
-        },
-        name:{
+    cnpj:{
             type:String,
             required:true,
-        },
-        password:{
-            type:String,
-            required:true,
-        },
-        email:{
-            type:String,
-            required:true
-        },
-        phone:{
-            type:String,
-            required:true
-        },
     },
+    name:{
+        type:String,
+        required:true,
+    },
+    password:{
+        type:String,
+        required:true,
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    phone:{
+        type:String,
+        required:true
+    },
+
 
     employees:{
         name:{
