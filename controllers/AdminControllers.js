@@ -2,6 +2,8 @@
 const AdminModel = require('../models/AdminModel')
 const bcrypt = require('bcrypt')
 
+const getToken = require('../helpers/getToken')
+
 
 exports.createAccount = async (req,res)=> {
     const {cnpj, name, password, email, phone} =  req.body
@@ -41,10 +43,15 @@ exports.createAccount = async (req,res)=> {
     }
 
         try{
-          const userCreate = await AdminModel.create(newUser)
+            const userCreate = await AdminModel.create(newUser)
+            const token = await getToken(userCreate)
 
-          
-            res.status(200).json({message:userCreate})
+
+            return res.status(200).json({
+                message:"Conta criada com sucesso",
+                auth:true,
+                token:token
+            })
             
         }catch(error){
             res.status(400).json({message:error})

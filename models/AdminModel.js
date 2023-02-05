@@ -1,12 +1,10 @@
 const mongoose = require('../db/db')
 const { Schema } = require('mongoose')
 
-
 const AdminModel = mongoose.model('user', new Schema({
-
     cnpj:{
-            type:String,
-            required:true,
+        type:String,
+        required:true,
     },
     name:{
         type:String,
@@ -23,6 +21,15 @@ const AdminModel = mongoose.model('user', new Schema({
     phone:{
         type:String,
         required:true
+    },
+
+    isAdmin:{
+        type:Boolean,
+        default:true
+    },
+    createAt:{
+        type:Date,
+        default: new Date()
     },
 
 
