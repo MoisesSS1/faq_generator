@@ -1,5 +1,6 @@
 //models
 const AdminModel = require('../models/AdminModel')
+const bcrypt = require('bcrypt')
 
 
 exports.createAccount = async (req,res)=> {
@@ -16,7 +17,6 @@ exports.createAccount = async (req,res)=> {
     if(!cnpjValid || !nameValid || !passwordValid || !emailValid || !phoneValid || cnpjValid.length!==14 || phoneValid.length!==11 ){
         return res.status(422).json({message:"Preencha os dados corretamente!"})
     }
-
     //verifica se usuario já existe
     try{
         const userExist = await AdminModel.find({cnpj:cnpjValid})
@@ -25,21 +25,25 @@ exports.createAccount = async (req,res)=> {
         if(check!==""){//faz a checagem se o array estiver diferente de vazio
             return res.status(422).json({message:"Cnpj já foi utilizado, use outro!"})
         }
-
     }catch(error){
       return  res.status(422).json({message:"Houve um erro ao validar cnpj, tente novamente mais tarde!"})
     }
+
+    //cria a criptografia da senha e cadastrada a hash
+    const passwordHash = await bcrypt.hash(passwordValid, 10)
     
     const newUser = {
             cnpj:cnpjValid,
             name: nameValid,
-            password:passwordValid,
+            password:passwordHash,
             email:emailValid,
             phone:phoneValid
     }
 
         try{
           const userCreate = await AdminModel.create(newUser)
+
+          
             res.status(200).json({message:userCreate})
             
         }catch(error){
