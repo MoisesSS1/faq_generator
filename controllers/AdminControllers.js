@@ -1,8 +1,12 @@
-//models
-const AdminModel = require('../models/AdminModel')
+//modulos
 const bcrypt = require('bcrypt')
 
+//models
+const AdminModel = require('../models/AdminModel')
+
+//helpers
 const getToken = require('../helpers/getToken')
+const checkUserForToken = require('../helpers/checkUserForToken')
 
 
 exports.createAccount = async (req,res)=> {
@@ -57,5 +61,20 @@ exports.createAccount = async (req,res)=> {
             res.status(400).json({message:error})
         }
 
+}
+
+exports.getSectors = async (req,res)=>{ 
+    const Authorization = req.headers['authorization']
+    const token = Authorization.replace("Bearer ","")
+
+    try{
+        const userId = await checkUserForToken(token)
+        const user = await AdminModel.findById(userId)
+
+        const sectors = await user.sectorsAndContent.sectors
+        return res.status(200).json({data:sectors})
+    }catch(error){
+     return   res.status(401).json("Houve um erro ao buscar usuário, tente novamente mais tarde!")
+    }
 }
 

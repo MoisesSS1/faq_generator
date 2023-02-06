@@ -22,7 +22,6 @@ const AdminModel = mongoose.model('user', new Schema({
         type:String,
         required:true
     },
-
     isAdmin:{
         type:Boolean,
         default:true
@@ -32,13 +31,15 @@ const AdminModel = mongoose.model('user', new Schema({
         default: new Date()
     },
 
-
     employees:{
         name:{
             type:String,
         },
         cpf:{
             type:Number
+        },
+        email:{
+            type:String
         },
         sector:{
             type:String
@@ -48,34 +49,30 @@ const AdminModel = mongoose.model('user', new Schema({
         }
     },
 
-    sectors:{
-        name:{
+    sectorsAndContent:{
+        setor:{
             type:String
         },
         topics:{
-            type:String
-        }
-    },
-
-    content:{
-        sector:{
-            type:String
-        },
-        title:{
-            type:String,
-        },
-        steps:{
-            description:{
+            area:{
                 type:String
             },
-            img:{
-                type:String
+            title:{
+                type:String,
             },
-            obs:{
-                type:String
+            steps:{
+                description:{
+                    type:String
+                },
+                img:{
+                    type:String
+                },
+                obs:{
+                    type:String
+                }
             }
         }
-    }
+    },
 })) 
 
 
