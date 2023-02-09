@@ -7,8 +7,6 @@ const AdminControllers = require('../controllers/AdminControllers')
 
 //rotas publicas
 router.post('/create',AdminControllers.createAccount)
-router.get('/sectors',AdminControllers.getSectors)
-
 
 //rotas privadas
 

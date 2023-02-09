@@ -2,13 +2,13 @@
 const bcrypt = require('bcrypt')
 
 //models
-const AdminModel = require('../models/AdminModel')
+const {AdminModel} = require('../models/AdminModel')
 
 //helpers
 const getToken = require('../helpers/getToken')
 const checkUserForToken = require('../helpers/checkUserForToken')
 
-
+//cria conta admin
 exports.createAccount = async (req,res)=> {
     const {cnpj, name, password, email, phone} =  req.body
 
@@ -63,18 +63,7 @@ exports.createAccount = async (req,res)=> {
 
 }
 
-exports.getSectors = async (req,res)=>{ 
-    const Authorization = req.headers['authorization']
-    const token = Authorization.replace("Bearer ","")
 
-    try{
-        const userId = await checkUserForToken(token)
-        const user = await AdminModel.findById(userId)
 
-        const sectors = await user.sectorsAndContent.sectors
-        return res.status(200).json({data:sectors})
-    }catch(error){
-     return   res.status(401).json("Houve um erro ao buscar usuário, tente novamente mais tarde!")
-    }
-}
+
 

@@ -1,7 +1,8 @@
 const mongoose = require('../db/db')
 const { Schema } = require('mongoose')
 
-const AdminModel = mongoose.model('user', new Schema({
+
+const AdminSchema = new Schema({
     cnpj:{
         type:String,
         required:true,
@@ -30,52 +31,81 @@ const AdminModel = mongoose.model('user', new Schema({
         type:Date,
         default: new Date()
     },
+})
 
-    employees:{
-        name:{
-            type:String,
-        },
-        cpf:{
-            type:Number
-        },
-        email:{
-            type:String
-        },
-        sector:{
-            type:String
-        },
-        password:{
-            type:String,
-        }
+const EmployeesSchema = new Schema({
+    admin:{
+        type: Schema.Types.ObjectId,ref:'AdminSchema',
+        required:true
     },
+    name:{
+        type:String,
+        required:true
+    },
+    cpf:{
+        type:Number,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    sector:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    }
+})
 
-    sectorsAndContent:{
-        setor:{
-            type:String
+const SectorsSchema = new Schema({
+    admin:{
+        type: Schema.Types.ObjectId,ref:'AdminSchema',
+        required:true
+    },
+    sector:{
+        type:String
+    }
+})
+
+
+const ContentSchema = new Schema({
+    admin:{
+        type: Schema.Types.ObjectId,ref:'AdminSchema',
+        required:true
+    },
+    topics:[{
+        area:{
+            type:String,
+            required:true
         },
-        topics:{
-            area:{
-                type:String
-            },
-            title:{
+        title:{
+            type:String,
+            required:true
+        },
+        steps:{
+            description:{
                 type:String,
+                required:true
             },
-            steps:{
-                description:{
-                    type:String
-                },
-                img:{
-                    type:String
-                },
-                obs:{
-                    type:String
-                }
+            img:{
+                type:String,
+                required:true
+            },
+            obs:{
+                type:String,
+                required:true
             }
-        }
-    },
-})) 
+    }}]
+})
+
+const AdminModel = mongoose.model('Admin', AdminSchema)
+const EmployeesModel = mongoose.model('Employee', EmployeesSchema ) 
+const ContentModel = mongoose.model('Content', ContentSchema) 
+const SectorsModel = mongoose.model('Sector', SectorsSchema) 
 
 
 
-
-module.exports = AdminModel
+module.exports = {ContentModel, AdminModel, EmployeesModel, SectorsModel}
