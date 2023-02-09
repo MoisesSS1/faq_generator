@@ -9,6 +9,8 @@ const AdminControllers = require('../controllers/AdminControllers')
 router.post('/create',AdminControllers.createAccount)
 
 //rotas privadas
+router.post('/edit',AdminControllers.EditAccount)
+
 
 
 
