@@ -19,7 +19,8 @@ exports.createSector = async (req,res)=>{
     
     //verifica se setor já foi utilizado
     try{
-        const sectorsInDB = await SectorsModel.findOne({sector:sectorValid})
+        const sectorsInDB = await SectorsModel.findOne({admin:user._id,sector:sectorValid})
+        
         if(sectorsInDB){
             return  res.status(401).json({message:"Esse setor já foi criado, utilize outro!"})
         }

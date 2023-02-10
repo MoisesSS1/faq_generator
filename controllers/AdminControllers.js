@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt')
 
 //models
-const {AdminModel} = require('../models/AdminModel')
+const { AdminModel } = require('../models/AdminModel')
 
 //helpers
 const getToken = require('../helpers/getToken')
@@ -116,8 +116,3 @@ exports.EditAccount = async (req,res)=>{
            }
 
 }
-
-
-
-
-

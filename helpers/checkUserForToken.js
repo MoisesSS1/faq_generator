@@ -7,6 +7,7 @@ const {AdminModel} = require('../models/AdminModel')
 const checkUserForToken = async (req)=>{
 
     const Authorization = req.headers['authorization']
+    
     const token = Authorization.replace("Bearer ","")
 
     const userId = await jwt.decode(token)
