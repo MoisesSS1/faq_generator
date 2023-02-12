@@ -11,6 +11,9 @@ const checkUserForToken = require('../helpers/checkUserForToken')
 //Create employees
 exports.create = async (req,res)=>{
     const user = await checkUserForToken(req)
+    if(user.isAdmin !== true){
+        return res.status(401).json({message:"Area somente para usuarios administradores!"})
+    }
     const { cpf, name, email,sector,password} = req.body
 
     //Checagem
@@ -60,7 +63,6 @@ exports.get = async (req,res)=>{
     const user = await checkUserForToken(req)
 
     //checar se usuario já utiliza o cpf
-
     try{
         const myEmployees = await EmployeesModel.find({admin:user._id})
         return res.status(200).json({data:myEmployees})

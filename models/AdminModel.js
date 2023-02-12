@@ -57,7 +57,11 @@ const EmployeesSchema = new Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    createAt:{
+        type:Date,
+        default: new Date()
+    },
 })
 
 const SectorsSchema = new Schema({
@@ -67,7 +71,11 @@ const SectorsSchema = new Schema({
     },
     sector:{
         type:String
-    }
+    },
+    createAt:{
+        type:Date,
+        default: new Date()
+    },
 })
 
 const ContentSchema = new Schema({
@@ -75,29 +83,21 @@ const ContentSchema = new Schema({
         type: Schema.Types.ObjectId,ref:'AdminSchema',
         required:true
     },
-    topics:[{
-        area:{
+    title:{
+        type:String,
+        required:true
+    },
+    area:{
             type:String,
             required:true
-        },
-        title:{
-            type:String,
-            required:true
-        },
-        steps:{
-            description:{
-                type:String,
-                required:true
-            },
-            img:{
-                type:String,
-                required:true
-            },
-            obs:{
-                type:String,
-                required:true
-            }
-    }}]
+    },
+    steps:[
+
+    ],
+    createAt:{
+        type:Date,
+        default: new Date()
+    },
 })
 
 const AdminModel = mongoose.model('Admin', AdminSchema)

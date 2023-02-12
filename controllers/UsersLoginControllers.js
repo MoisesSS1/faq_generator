@@ -43,13 +43,14 @@ exports.login = async (req,res)=>{
         if(userEmployees && userEmployees!==null){
 
             const checkPassword = await bcrypt.compare(password,userEmployees.password)
-
+            //validação de senha
             if(!checkPassword){
                 return res.status(401).json({
                     message:"Senha incorreta!",
                 })
             }
 
+            //gerar token de usuario logado
             const token = await getToken(userEmployees)
 
             return res.status(200).json({
