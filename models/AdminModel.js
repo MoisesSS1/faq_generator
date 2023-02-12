@@ -70,7 +70,6 @@ const SectorsSchema = new Schema({
     }
 })
 
-
 const ContentSchema = new Schema({
     admin:{
         type: Schema.Types.ObjectId,ref:'AdminSchema',

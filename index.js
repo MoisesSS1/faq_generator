@@ -7,6 +7,7 @@ const express = require('express')
 const AdminRoutes = require('./routes/AdminRoutes')
 const SectorRoutes = require('./routes/SectorRoutes')
 const EmployeesRoutes = require('./routes/EmployeesRoutes')
+const LoginUsersRoutes = require('./routes/LoginUsersRoutes')
 
 //app
 const app = express()
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use('/account', AdminRoutes)
 app.use('/sector', SectorRoutes)
 app.use('/employees', EmployeesRoutes)
+app.use('/login', LoginUsersRoutes)
 
 
 

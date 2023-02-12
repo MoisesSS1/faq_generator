@@ -8,6 +8,7 @@ const { AdminModel } = require('../models/AdminModel')
 const getToken = require('../helpers/getToken')
 const checkUserForToken = require('../helpers/checkUserForToken')
 
+//publics routes
 //cria conta admin
 exports.createAccount = async (req,res)=> {
     const {cnpj, name, password, email, phone} =  req.body
@@ -50,7 +51,6 @@ exports.createAccount = async (req,res)=> {
             const userCreate = await AdminModel.create(newUser)
             const token = await getToken(userCreate)
 
-
             return res.status(200).json({
                 message:"Conta criada com sucesso",
                 auth:true,
@@ -63,11 +63,20 @@ exports.createAccount = async (req,res)=> {
 
 }
 
+//private Routes
+
+//editar conta
 exports.EditAccount = async (req,res)=>{
     
+    const user = await checkUserForToken(req)
+
+    //check user isAdmin
+    if(!user.isAdmin){
+        return res.status(401).json({message:"Area somente para usuários administrador!"})
+    }
+
     const {cnpj, name, password, email, phone} =  req.body
 
-    const user = await checkUserForToken(req)
 
        //Validações
        const cnpjValid = cnpj && cnpj.trim()
@@ -77,7 +86,7 @@ exports.EditAccount = async (req,res)=>{
        const phoneValid = phone && phone.trim()
    
        //checagem
-       if(!cnpjValid || !nameValid || !passwordValid || !emailValid || !phoneValid || cnpjValid.length!==14 || phoneValid.length!==11 ){
+       if(!cnpjValid || !nameValid || !passwordValid || !emailValid || !phoneValid || cnpjValid.length!==14 || phoneValid.length!==11 || passwordValid.lenght<=8 ){
            return res.status(422).json({message:"Preencha os dados corretamente!"})
        }
        //verifica se usuario já existe
