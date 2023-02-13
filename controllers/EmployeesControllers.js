@@ -26,6 +26,30 @@ exports.create = async (req,res)=>{
     if(!cpfValid || !nameValid || !passwordValid || !emailValid || !sectorValid || cpfValid.length!==11 ){
         return res.status(422).json({message:"Preencha os dados corretamente!"})
     }
+
+    //check cpf and email they're used
+    try{
+        const checkCPF = await EmployeesModel.findOne({cpf:cpfValid})
+        if(checkCPF){
+            return res.status(422).json({message:"CPF já foi utilizado por um funcionário, utilize outro!!"}) 
+        }
+    }catch(error){
+        console.log(error)
+        return res.status(422).json({message:"Erro ao verificar o cpf, tente novamente mais tarde!!"}) 
+    }
+
+    try{
+        const checkEmail = await EmployeesModel.findOne({email:email})
+        if(checkEmail){
+            return res.status(422).json({message:"E-mail já foi utilizado por um funcionário, utilize outro!!"}) 
+        }
+    }catch(error){
+        console.log(error)
+        return res.status(422).json({message:"Erro ao verificar o cpf, tente novamente mais tarde!!"}) 
+    }
+    
+    
+
    
         //verify sector exist
         try{
@@ -37,6 +61,7 @@ exports.create = async (req,res)=>{
             return res.status(422).json({message:"Erro ao buscar setores salvos no DB, tente novamente mais tarde!!"}) 
         }
 
+        
 
         try {
             const passwordHash = await bcrypt.hash(passwordValid, 10)
@@ -51,7 +76,7 @@ exports.create = async (req,res)=>{
             }
 
             const employeesSave = await EmployeesModel.create(employeesData)
-            res.status(200).json({message:"Funcionário criado com sucesso!!!"})
+            res.status(200).json({message:"Funcionário criado com sucesso!!!",data:employeesSave})
 
         } catch (error) {
             return res.status(422).json({message:"Erro ao criar funcionário, tente novamente mais tarde!!"}) 

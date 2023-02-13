@@ -72,7 +72,7 @@ exports.EditAccount = async (req,res)=>{
 
     //check user isAdmin
     if(!user.isAdmin){
-        return res.status(401).json({message:"Area somente para usuários administrador!"})
+        return res.status(401).json({message:"Area somente para usuários administradores!"})
     }
 
     const {cnpj, name, password, email, phone} =  req.body

@@ -10,6 +10,11 @@ const checkUserForToken = require('../helpers/checkUserForToken')
 //cria setor
 exports.createSector = async (req,res)=>{
     const user = await checkUserForToken(req)
+
+    if(user.isAdmin !== true){
+        return res.status(401).json({message:"Area somente para adinistradores!"})
+    }
+
     const {sector} = req.body
     const sectorValid = await sector && sector.trim() && sector.toUpperCase()
     

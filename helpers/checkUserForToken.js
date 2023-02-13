@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 //models
-const {AdminModel} = require('../models/AdminModel')
+const {AdminModel, EmployeesModel} = require('../models/AdminModel')
 
 
 const checkUserForToken = async (req)=>{
@@ -15,8 +15,15 @@ const checkUserForToken = async (req)=>{
     //checar id se é válido
 
     try{
-        const user = await AdminModel.findById(userId)
-        return user
+        const userAdmin = await AdminModel.findById(userId)
+
+        if(!userAdmin){
+            const user = await EmployeesModel.findById(userId)
+
+            return user
+    
+        }
+        return userAdmin
     }catch(error){
         return res.status(401).json("Houve um erro ao buscar usuário, tente novamente mais tarde!")
     }   
