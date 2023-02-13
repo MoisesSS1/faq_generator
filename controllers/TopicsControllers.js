@@ -52,3 +52,6 @@ exports.create = async (req,res)=>{
 }
 
 //exibir tópicos
+exports.get = async (req,res)=>{
+    res.send("ola")
+}
