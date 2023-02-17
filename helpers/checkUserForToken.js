@@ -17,11 +17,11 @@ const checkUserForToken = async (req)=>{
     try{
         const userAdmin = await AdminModel.findById(userId)
 
-        if(!userAdmin){
+        if(!userAdmin||userAdmin===null||userAdmin===undefined){
             const user = await EmployeesModel.findById(userId)
 
+
             return user
-    
         }
         return userAdmin
     }catch(error){

@@ -23,6 +23,12 @@ const checkUserIsLogged = async(req,res,next)=>{
 // caso venha um booleano, para não dar erro no método toString
     if(UserExist===null ||UserExist=== undefined){ 
         const userEmployess = await EmployeesModel.findById(userId,'-password')
+    
+        //checa se usuario existe no banco de funcionarios, caso não exista retorna para logar
+        if(userEmployess===null ||userEmployess=== undefined){
+            return res.status(401).json({message:"Entre em uma conta para acessar!"})
+        }
+
         return next()
     }
 

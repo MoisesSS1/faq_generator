@@ -78,18 +78,23 @@ const SectorsSchema = new Schema({
     },
 })
 
+
 const ContentSchema = new Schema({
     admin:{
         type: Schema.Types.ObjectId,ref:'AdminSchema',
         required:true
     },
-    title:{
+    area:{ //area do tópico, quando for criar o conteudo, fazer uma busca pelas areas que ja foram criadas
         type:String,
         required:true
     },
-    area:{
-            type:String,
-            required:true
+    sectorAcess:{//setor que terá acesso a esse conteudo
+        type:String,
+        required:true
+    },
+    title:{
+        type:String,
+        required:true
     },
     steps:[
 

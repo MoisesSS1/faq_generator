@@ -2,6 +2,7 @@ require('dotenv').config()
 
 //módulos
 const express = require('express')
+const cors = require('cors')
 
 //rotas
 const AdminRoutes = require('./routes/AdminRoutes')
@@ -16,6 +17,7 @@ const port = process.env.PORT
 
 //middlewares
 app.use(express.json())
+app.use(cors())
 app.use('/account', AdminRoutes)
 app.use('/sector', SectorRoutes)
 app.use('/employees', EmployeesRoutes)

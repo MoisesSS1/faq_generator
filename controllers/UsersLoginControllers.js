@@ -29,14 +29,14 @@ exports.login = async (req,res)=>{
 
             //validação de senha
             const checkPassword = bcrypt.compare(password,userAdmin.password)
-            console.log(checkPassword)
 
             const token = await getToken(userAdmin)
             
             return res.status(200).json({
                 message:"Conta criada com sucesso",
                 auth:true,
-                token:token
+                token:token,
+                isAdmin:true
             })
         }
 
@@ -54,7 +54,7 @@ exports.login = async (req,res)=>{
             const token = await getToken(userEmployees)
 
             return res.status(200).json({
-                message:"Conta criada com sucesso",
+                message:"Usuario logado com sucesso!",
                 auth:true,
                 token:token
             })
