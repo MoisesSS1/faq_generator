@@ -45,10 +45,18 @@ exports.createSector = async (req,res)=>{
     }
 }
 
-//informa os setores cadastrados no banco 
+//informa os setores cadastrados pelo ADMIN
 exports.getSectors = async (req,res)=>{ 
         const user = await checkUserForToken(req)
-        const sectors = await SectorsModel.find({admin:user._id})
-        return res.status(200).json({data:sectors})
+
+        try {
+            const sectors = await SectorsModel.find({admin:user._id})
+            return res.status(200).json({data:sectors})
+            
+        } catch (error) {
+            return res.status(401).json({message:"Erro ao buscar setores, tente novamente mais tarde!"})
+        }   
 }
+
+
 

@@ -6,7 +6,7 @@ const cors = require('cors')
 
 //rotas
 const AdminRoutes = require('./routes/AdminRoutes')
-const SectorRoutes = require('./routes/SectorRoutes')
+const SectorsRoutes = require('./routes/SectorsRoutes')
 const EmployeesRoutes = require('./routes/EmployeesRoutes')
 const LoginUsersRoutes = require('./routes/LoginUsersRoutes')
 const TopicsRoutes = require('./routes/TopicsRoutes')
@@ -19,7 +19,7 @@ const port = process.env.PORT
 app.use(express.json())
 app.use(cors())
 app.use('/account', AdminRoutes)
-app.use('/sector', SectorRoutes)
+app.use('/sectors', SectorsRoutes)
 app.use('/employees', EmployeesRoutes)
 app.use('/login', LoginUsersRoutes)
 app.use('/topics', TopicsRoutes)

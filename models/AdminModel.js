@@ -72,6 +72,7 @@ const SectorsSchema = new Schema({
     sector:{
         type:String
     },
+    areaAndTopics:[],
     createAt:{
         type:Date,
         default: new Date()
