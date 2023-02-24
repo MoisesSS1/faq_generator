@@ -33,7 +33,7 @@ exports.login = async (req,res)=>{
             const token = await getToken(userAdmin)
             
             return res.status(200).json({
-                message:"Conta criada com sucesso",
+                message:"Login com sucesso",
                 auth:true,
                 token:token,
                 isAdmin:true

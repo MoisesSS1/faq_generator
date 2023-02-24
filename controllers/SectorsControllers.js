@@ -50,7 +50,7 @@ exports.getSectors = async (req,res)=>{
         const user = await checkUserForToken(req)
 
         try {
-            const sectors = await SectorsModel.find({admin:user._id})
+            const sectors = await SectorsModel.find({admin:user._id},'sector')
             return res.status(200).json({data:sectors})
             
         } catch (error) {

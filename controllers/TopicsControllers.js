@@ -4,7 +4,9 @@ const {ContentModel, SectorsModel} = require('../models/AdminModel')
 //helpers
 const checkUserForToken = require('../helpers/checkUserForToken')
 
-//criar tópico
+//rotas para os Admins
+
+//cria tópico, salvar id e titulo no array de areas, dentro de Model de setores
 exports.create = async (req,res)=>{
     const user = await checkUserForToken(req)
     //check user is admin
@@ -100,17 +102,17 @@ exports.create = async (req,res)=>{
         return res.status(401).json({message:"Erro ao salvar tópico, tente mais tarde!"}) 
     }
 }
-
-//exibir as areas dos tópicos para os funcionarios
+//exibir tópicos de determinado setor para o admin
 exports.getAreas = async (req,res)=>{
     const user = await checkUserForToken(req)
+    const id = req.params.id
 
-    if(user.isAdmin){
-        return res.status(200).json({message:"Como você é admin não será possivel especificar os tópicos do seu setor!"})
+    if(user.isAdmin!==true){
+        return res.status(401).json({message:"Area somente para administradores!"})
     }
 
     try {
-        const contentData = await ContentModel.find({admin:user.admin,sectorAcess:user.sector},'area')
+        const contentData = await SectorsModel.find({admin:user._id,_id:id})
         return res.status(200).json({data:contentData})
         
     } catch (error) {
@@ -118,19 +120,32 @@ exports.getAreas = async (req,res)=>{
     } 
 }
 
-//rota que pega o nome do tópico e filtra os tópicos disponiveis com aquele nome
 
-exports.getTopics = async (req,res)=>{
+
+//rotas para os funcionários
+
+//retorna a area e os titulo disponiveis de acordo com o setor do funcionário
+exports.areaAndTitle = async (req,res)=>{
     const user = await checkUserForToken(req)
 
-    const area = req.params.area
+    try{
+        const areaAndTitle = await SectorsModel.findOne({admin:user.admin,sectorAcess:user.sector}, 'areaAndTopics')
+        return res.status(200).json({data:areaAndTitle})
+    }catch(error){
+        return res.status(401).json({message:"Erro ao buscar os titulos, tente mais tarde"})
+    }
+}
+//rota que pega o nome do tópico e filtra os tópicos disponiveis com aquele nome
+exports.getTopics = async (req,res)=>{
+    const user = await checkUserForToken(req)
+    const idTitle = req.params.id
 
     if(user.isAdmin){
-        return res.status(200).json({message:"Como você é admin não será possivel especificar os tópicos do seu setor!"})
+        return res.status(200).json({message:"Como você é admin não será possivel especificar o tópico!"})
     }
 
     try {
-        const contentData = await ContentModel.find({admin:user.admin,area:area})
+        const contentData = await ContentModel.find({admin:user.admin,_id:idTitle})
         return res.status(200).json({data:contentData})
         
     } catch (error) {
@@ -138,3 +153,4 @@ exports.getTopics = async (req,res)=>{
     }
     
 }
+
