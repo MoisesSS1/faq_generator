@@ -59,4 +59,3 @@ exports.getSectors = async (req,res)=>{
 }
 
 
-

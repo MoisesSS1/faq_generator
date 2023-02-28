@@ -14,7 +14,7 @@ exports.create = async (req,res)=>{
        return res.status(401).json({message:"Area somente para usuários administradores!"})
     }
 
-    const {area,sectorAcess, title, steps} = req.body
+    const {area,sectorAcess, title, steps,obs} = req.body
 
     //tratando dados
     const areaCheck = area && area.trim().toUpperCase()
@@ -43,6 +43,7 @@ exports.create = async (req,res)=>{
             area:areaCheck,
             sectorAcess:sectorAcessCheck,
             title:titleCheck,
+            obs:obs,
             steps:steps
         }
         

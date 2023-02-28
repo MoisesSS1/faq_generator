@@ -97,6 +97,9 @@ const ContentSchema = new Schema({
         type:String,
         required:true
     },
+    obs:{ //observação
+        type:String,
+    },
     steps:[
 
     ],
