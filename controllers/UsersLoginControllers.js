@@ -28,7 +28,14 @@ exports.login = async (req,res)=>{
         if(userAdmin && userAdmin!==null){
 
             //validação de senha
-            const checkPassword = bcrypt.compare(password,userAdmin.password)
+            const checkPassword = await bcrypt.compare(password,userAdmin.password)
+
+                    //validação de senha
+                    if(!checkPassword){
+                         return res.status(401).json({
+                             message:"Senha incorreta!",
+                         })
+                        }
 
             const token = await getToken(userAdmin)
             
