@@ -14,7 +14,7 @@ router.post('/create', checkUserIsLogged, TopicsControllers.create)//cria um tó
 router.get('/sector/:id', checkUserIsLogged, TopicsControllers.getAreas)//informa ao admin os tópicos de determinada area por id
 router.get('/areaandtitle', checkUserIsLogged, TopicsControllers.areaAndTitle)//informa a area e os titulos
 router.get('/title/:id', checkUserIsLogged, TopicsControllers.getTopics)//informa os tópicos de uma area especifica
-router.post('/delete/:sector/:id', checkUserIsLogged, TopicsControllers.deleteTopic)//exclui o tópico
+router.delete('/delete/:sector/:id', checkUserIsLogged, TopicsControllers.deleteTopic)//exclui o tópico
 
 
 

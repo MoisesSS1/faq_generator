@@ -5,7 +5,6 @@ const { ContentModel, SectorsModel } = require('../models/AdminModel')
 const checkUserForToken = require('../helpers/checkUserForToken')
 
 //rotas para os Admins
-
 //cria tópico, salvar id e titulo no array de areas, dentro de Model de setores
 exports.create = async (req, res) => {
     const user = await checkUserForToken(req)
@@ -121,23 +120,26 @@ exports.getAreas = async (req, res) => {
         return res.status(401).json({ message: "Erro ao buscar setores no banco de dados!" })
     }
 }
-
 //exclui o tópico, deleta id e titulo do array de areas, dentro do model de setores e excluir o conteudo
 exports.deleteTopic = async (req, res) => {
     const user = await checkUserForToken(req)
     const { sector, id } = req.params
-    const area = 'FINANCEIRO'
 
     if (user.isAdmin !== true) {
         return res.status(401).json({ message: "Area somente para administradores!" })
     }
 
     try {
+        //verifica a area do tópico
+        const topicDB = await ContentModel.findOne({ _id: id, admin: user._id }, 'area')
+        const area = topicDB.area
+        console.log(area)
         //lista os tópicos do setor
         const sectorDB = await SectorsModel.findOne({ admin: user._id, sector: sector })
 
         //filtra os tópicos da area enviada
         const sectorDBAdd = await sectorDB.areaAndTopics.filter((obj => obj[area]))[0]
+
         //acha o indice da area
         const indexSector = await sectorDB.areaAndTopics.findIndex((obj) => {
             return Object.keys(obj) == area
@@ -152,22 +154,16 @@ exports.deleteTopic = async (req, res) => {
         //excluir do banco de
         await ContentModel.deleteOne({ admin: user._id, _id: id })
 
-        return res.status(422).json({ message: "Tópico excluido com sucesso!" })
-
-
+        return res.status(200).json({ message: "Tópico excluido com sucesso!" })
 
     } catch (error) {
-        return res.status(422).json({ message: "Houve um erro ao excluir o tópico" })
+        return res.status(401).json({ message: "Houve um erro ao excluir o tópico" })
     }
-
-
-
 }
 
 
 
 //rotas para os funcionários
-
 //retorna a area e os titulo disponiveis de acordo com o setor do funcionário
 exports.areaAndTitle = async (req, res) => {
     const user = await checkUserForToken(req)
