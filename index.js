@@ -10,12 +10,15 @@ const SectorsRoutes = require('./routes/SectorsRoutes')
 const EmployeesRoutes = require('./routes/EmployeesRoutes')
 const LoginUsersRoutes = require('./routes/LoginUsersRoutes')
 const TopicsRoutes = require('./routes/TopicsRoutes')
+const morgan = require('morgan')
 
 //app
 const app = express()
 const port = process.env.PORT
 
 //middlewares
+app.use(express.urlencoded({ extended: true }))
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
 app.use('/account', AdminRoutes)
@@ -26,6 +29,6 @@ app.use('/topics', TopicsRoutes)
 
 
 
-app.listen(port||5000,()=>{
+app.listen(port || 5000, () => {
     console.log('servidor rodando ')
 })

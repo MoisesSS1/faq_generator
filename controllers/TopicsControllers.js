@@ -9,6 +9,7 @@ const checkUserForToken = require('../helpers/checkUserForToken')
 //cria tópico, salvar id e titulo no array de areas, dentro de Model de setores
 exports.create = async (req, res) => {
     const user = await checkUserForToken(req)
+    console.log(req.files)
     //check user is admin
     if (user.isAdmin !== true) {
         return res.status(401).json({ message: "Area somente para usuários administradores!" })
@@ -121,8 +122,45 @@ exports.getAreas = async (req, res) => {
     }
 }
 
-//exclui o tópico, exclui id e titulo do array de areas, dentro do model de setores e excluir o conteudo
+//exclui o tópico, deleta id e titulo do array de areas, dentro do model de setores e excluir o conteudo
 exports.deleteTopic = async (req, res) => {
+    const user = await checkUserForToken(req)
+    const { sector, id } = req.params
+    const area = 'FINANCEIRO'
+
+    if (user.isAdmin !== true) {
+        return res.status(401).json({ message: "Area somente para administradores!" })
+    }
+
+    try {
+        //lista os tópicos do setor
+        const sectorDB = await SectorsModel.findOne({ admin: user._id, sector: sector })
+
+        //filtra os tópicos da area enviada
+        const sectorDBAdd = await sectorDB.areaAndTopics.filter((obj => obj[area]))[0]
+        //acha o indice da area
+        const indexSector = await sectorDB.areaAndTopics.findIndex((obj) => {
+            return Object.keys(obj) == area
+        })
+        //exclui o item do array
+        const newDataSector = await sectorDBAdd[`${area}`].filter((data => data.idPub != id))
+        //substitui o array antigo da area pelo newData(array atualizado)
+        sectorDB.areaAndTopics[indexSector][area] = newDataSector
+        //salvar os dados atualizados no banco
+        await SectorsModel.updateOne({ admin: user._id, sector: sector }, sectorDB)
+
+        //excluir do banco de
+        await ContentModel.deleteOne({ admin: user._id, _id: id })
+
+        return res.status(422).json({ message: "Tópico excluido com sucesso!" })
+
+
+
+    } catch (error) {
+        return res.status(422).json({ message: "Houve um erro ao excluir o tópico" })
+    }
+
+
 
 }
 
