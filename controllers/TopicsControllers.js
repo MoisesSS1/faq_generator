@@ -157,7 +157,7 @@ exports.deleteTopic = async (req, res) => {
         return res.status(200).json({ message: "Tópico excluido com sucesso!" })
 
     } catch (error) {
-        return res.status(401).json({ message: "Houve um erro ao excluir o tópico" })
+        return res.status(401).json({ message: "Houve um erro ao excluir o tópico!" })
     }
 }
 
