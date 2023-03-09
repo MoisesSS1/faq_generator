@@ -14,7 +14,6 @@ const morgan = require('morgan')
 
 //app
 const app = express()
-const port = process.env.PORT
 
 //middlewares
 app.use(express.urlencoded({ extended: true }))
@@ -29,6 +28,6 @@ app.use('/topics', TopicsRoutes)
 
 
 
-app.listen(port || 5000, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log('servidor rodando ')
 })
