@@ -8,7 +8,6 @@ const checkUserForToken = require('../helpers/checkUserForToken')
 //cria tópico, salvar id e titulo no array de areas, dentro de Model de setores
 exports.create = async (req, res) => {
     const user = await checkUserForToken(req)
-    console.log(req.files)
     //check user is admin
     if (user.isAdmin !== true) {
         return res.status(401).json({ message: "Area somente para usuários administradores!" })
